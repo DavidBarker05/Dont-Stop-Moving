@@ -23,9 +23,20 @@ public class CopManager : MonoBehaviour
     [Min(0)]
     float spawnDelay;
     [SerializeField]
-    [Tooltip("How long cops until the cops are despawned after being spawned")]
+    [Tooltip("How long until the cops are despawned after being spawned")]
     [Min(0)]
     float despawnDelay;
+    [SerializeField]
+    [Tooltip("How long until the current attacking car begins to engage the player (drive forward towards the player to attack)")]
+    [Min(0)]
+    float engageDelay;
+    [SerializeField]
+    [Tooltip("How long the current attacking car prepares before attacking the player")]
+    [Min(0)]
+    float prepareDelay;
+    [Tooltip("How long until the current attacking car starts disengaging from the player (drive away from the player after attacking)")]
+    [Min(0)]
+    float disengageDelay;
 
     System.Collections.Generic.List<CopAgent> agents = new System.Collections.Generic.List<CopAgent>();
 
@@ -45,7 +56,7 @@ public class CopManager : MonoBehaviour
         if (agents.Count > 0) StartCoroutine(DespawnCops(delay: 0f));
         for (int i = 0; i < Random.Range(minCops, maxCops); i++) agents.Add(Instantiate(copPrefab));
         attackingAgent = agents[Random.Range(0, agents.Count)];
-        StartCoroutine(ChangeAgentState(delay: 0f, offset: Vector3.zero, newCopState: CopAgent.CopState.Engaging)); // Do an actual delay and offset at some point
+        StartCoroutine(ChangeAgentState(delay: engageDelay, offset: Vector3.zero, newCopState: CopAgent.CopState.Engaging)); // Do an actual delay and offset at some point
         StartCoroutine(DespawnCops(delay: despawnDelay));
     }
 
@@ -72,11 +83,10 @@ public class CopManager : MonoBehaviour
     public void MoveAgentToNextState()
     {
         float delay = attackingAgent.CurrentCopState {
-            CopAgent.CopState.Engaging => 0f, // Do an actual delay at some point
-            CopAgent.CopState.Preparing => 0f, // Do an actual delay at some point
-            CopAgent.CopState.Attacking => 0f, // Do an actual delay at some point
-            CopAgent.CopState.Disengaging => 0f, // Do an actual delay at some point
-            _ => 0f // Fallback value, should in theory never be needed
+            CopAgent.CopState.Engaging => prepareDelay,
+            CopAgent.CopState.Attacking => disengageDelay,
+            CopAgent.CopState.Disengaging => engageDelay,
+            _ => 0f // No delay for attacking, also fallback value (fallback should in theory never happen)
         };
         Vector3 offset = attackingAgent.CurrentCopState {
             CopAgent.CopState.Engaging => Vector3.zero, // Do an actual offset at some point
