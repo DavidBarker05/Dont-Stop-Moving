@@ -11,19 +11,19 @@ public class CarController : MonoBehaviour
         public float maxSpeed = 50f;
 
         [Header("UI - Digital")]
-        public TextMeshProUGUI speedText; // Digital readout
+        public TextMeshProUGUI speedText; 
 
         [Header("UI - Analog Needle")]
-        public RectTransform needleTransform; // Assign your needle image
-        public float minNeedleAngle = 225f; // Fully left (0 km/h)
-        public float maxNeedleAngle = -45f; // Fully right (max speed)
+        public RectTransform needleTransform; 
+        public float minNeedleAngle = 225f; 
+        public float maxNeedleAngle = -45f; 
 
         private Rigidbody rb;
 
         void Start()
         {
             rb = GetComponent<Rigidbody>();
-            rb.centerOfMass = new Vector3(0, -0.5f, 0); // Stability
+            rb.centerOfMass = new Vector3(0, -0.5f, 0); 
         }
 
         void FixedUpdate()
@@ -39,24 +39,20 @@ public class CarController : MonoBehaviour
 
             if (moveInput > 0)
             {
-                // Accelerate forward
                 rb.AddForce(transform.forward * moveInput * acceleration * Time.fixedDeltaTime);
             }
             else if (moveInput < 0)
             {
                 if (rb.velocity.magnitude > 0.5f && Vector3.Dot(rb.velocity, transform.forward) > 0)
-                {
-                    // Brake if moving forward
+                
                     rb.AddForce(-rb.velocity.normalized * brakingForce * Time.fixedDeltaTime);
                 }
                 else
                 {
-                    // Reverse
                     rb.AddForce(transform.forward * moveInput * acceleration * Time.fixedDeltaTime);
                 }
             }
-
-            // Limit speed
+ 
             if (rb.velocity.magnitude > maxSpeed)
             {
                 rb.velocity = rb.velocity.normalized * maxSpeed;
@@ -71,14 +67,10 @@ public class CarController : MonoBehaviour
 
         void UpdateSpeedometer()
         {
-            // Calculate speed in km/h
             float speed = rb.velocity.magnitude * 3.6f;
-
-            // Digital readout
             if (speedText != null)
                 speedText.text = Mathf.RoundToInt(speed) + " km/h";
 
-            // Analog needle rotation
             if (needleTransform != null)
             {
                 float speedPercent = Mathf.Clamp01(speed / maxSpeed);
