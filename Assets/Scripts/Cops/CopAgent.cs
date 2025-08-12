@@ -69,7 +69,11 @@ public class CopAgent : MonoBehaviour
 
     NavMeshAgent agent;
 
-    void Awake() => agent = GetComponent<NavMeshAgent>();
+    void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+    }
 
     void Update()
     {
