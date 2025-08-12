@@ -66,6 +66,9 @@ public class CopManager : MonoBehaviour
         attackingAgent.CurrentCopState = newCopState;
     }
 
+    /// <summary>
+    /// Change the current state of the attacking agent to the next state in the state machine
+    /// </summary>
     public void MoveAgentToNextState()
     {
         float delay = attackingAgent.CurrentCopState {
