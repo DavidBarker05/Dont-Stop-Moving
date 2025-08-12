@@ -13,7 +13,7 @@ public class CopAgent : MonoBehaviour
     public enum CopState
     {
         /// <summary>
-        /// Idle — just following behind the player
+        /// Idle â€” just following behind the player
         /// </summary>
         Driving,
         /// <summary>
@@ -73,8 +73,14 @@ public class CopAgent : MonoBehaviour
 
     void Update()
     {
+        if (agent.isOnOffMeshLink)
+        {
+            Vector3 endPos = agent.currentOffMeshLinkData.endPos + Vector3.up * agent.baseOffset;
+            agent.transform.position = Vector3.MoveTowards(agent.transform.position, endPos, agent.speed * Time.deltaTime);
+            if (agent.transform.position == endPos) agent.CompleteOffMeshLink();
+        }
         if (CurrentCopState != CopState.Attacking) target = player.transform.position + Offset;
-        agent.SetDestination(target);
+        if (agent.destination != target) agent.SetDestination(target);
         if (CurrentCopState != CopState.Driving && Vector3.Distance(transform.position, target) <= completionDistance) CopManager.Instance.MoveAgentToNextState();
     }
 }
