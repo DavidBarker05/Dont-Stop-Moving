@@ -42,7 +42,17 @@ public class CopManager : MonoBehaviour
     [Tooltip("How long the currently attacking car stays at its attacking position")]
     [Min(0)]
     float attackHoldTime;
+    [Header("Offsets")]
+    [SerializeField]
+    [Tooltip("The offsets from the player that a car can be while driving")]
+    SCG::List<Vector3> drivingOffsets = new SCG::List<Vector3>();
+    [SerializeField]
+    [Tooltip("The offsets from the player that a car can be while preparing to attack")]
+    SCG::List<Vector3> preparingOffsets = new SCG::List<Vector3>();
 
+    /// <summary>
+    /// Lock guard to stop agent from moving to next state if not allowed
+    /// </summary>
     public bool CanAgentMoveToNextState { get; private set; }
 
     SCG::List<CopAgent> agents = new SCG::List<CopAgent>();
@@ -60,11 +70,12 @@ public class CopManager : MonoBehaviour
 
     IEnumerator SpawnCops(float delay)
     {
+        if (drivingOffsets.Count <= 0 ||  preparingOffsets.Count <= 0) yield break;
         yield return new WaitForSeconds(delay);
         if (agents.Count > 0) StartCoroutine(DespawnCops(delay: 0f));
         for (int i = 0; i < Random.Range(minCops, maxCops); i++)
         {
-            agents.Add(Instantiate(copPrefab));
+            agents.Add(Instantiate(copPrefab, player.transform.position + drivingOffsets[Random.Range(0, drivingOffsets.Count)], Quaternion.identity));
             agents[i].Player = player;
         }
         ChangeAttackingAgent();
@@ -107,15 +118,6 @@ public class CopManager : MonoBehaviour
         if (caller == null || attackingAgent == null) return; // Don't do any logic if there is no caller or attacking agent
         if (attackingAgent.CurrentCopState == CopAgent.CopState.Driving && caller != this) return; // Only allow the manager to change a driving agent
         if (!CanAgentMoveToNextState) return;
-        // we start off driving
-        // we get selected
-        // we engage
-        // we make to destination
-        // we hold on prepare
-        // we attack
-        // we hold on attack
-        // we disengage
-        // loop
         float holdTime = attackingAgent.CurrentCopState switch {
             CopAgent.CopState.Driving => driveHoldTime,
             CopAgent.CopState.Engaging => 0f, // Instantly switch from engaging to preparing
@@ -125,10 +127,10 @@ public class CopManager : MonoBehaviour
             _ => 0f, // Fallback value, should in theory never be needed
         };
         Vector3 newOffset = attackingAgent.CurrentCopState switch {
-            CopAgent.CopState.Driving => Vector3.positiveInfinity,
+            CopAgent.CopState.Driving => preparingOffsets.Count > 0 ? preparingOffsets[Random.Range(0, preparingOffsets.Count)] : attackingAgent.Offset, // Move to the prepare position for engaging if possible
             CopAgent.CopState.Engaging => attackingAgent.Offset, // Stay at the same offset for preparing
             CopAgent.CopState.Preparing => Vector3.zero, // Move to where player is for attacking
-            CopAgent.CopState.Attacking => Vector3.positiveInfinity,
+            CopAgent.CopState.Attacking => drivingOffsets.Count > 0 ? drivingOffsets[Random.Range(0, drivingOffsets.Count)] : attackingAgent.Offset, // Move to the drive position for disengaging if possible
             CopAgent.CopState.Disengaging => attackingAgent.Offset, // Stay at the same offset for driving
             _ => Vector3.zero // Fallback value, should in theory never be needed
         };
