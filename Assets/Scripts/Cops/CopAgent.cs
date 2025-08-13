@@ -4,9 +4,6 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class CopAgent : MonoBehaviour
 {
-    // Here for now until an actual player is added
-    struct TempPlayer { public Transform transform; public Vector3 velocity; }
-
     /// <summary>
     /// The states that a cop agent can be in while chasing the player
     /// </summary>
@@ -53,7 +50,7 @@ public class CopAgent : MonoBehaviour
             if (_state != value)
             {
                 _state = value;
-                if (value == CopState.Attacking) target = player.transform.position + player.velocity * predictionTime;
+                if (value == CopState.Attacking) target = Player.transform.position + Player.Velocity * predictionTime;
             }
         }
     }
@@ -63,7 +60,7 @@ public class CopAgent : MonoBehaviour
     /// </summary>
     public Vector3 Offset { get; set; }
 
-    TempPlayer player;
+    public CarController Player { get; set; }
 
     Vector3 target;
 
@@ -83,7 +80,7 @@ public class CopAgent : MonoBehaviour
             agent.transform.position = Vector3.MoveTowards(agent.transform.position, endPos, agent.speed * Time.deltaTime);
             if (agent.transform.position == endPos) agent.CompleteOffMeshLink();
         }
-        if (CurrentCopState != CopState.Attacking) target = player.transform.position + Offset;
+        if (CurrentCopState != CopState.Attacking) target = Player.transform.position + Offset;
         if (agent.destination != target) agent.SetDestination(target);
         if (CurrentCopState != CopState.Driving && Vector3.Distance(transform.position, target) <= completionDistance) CopManager.Instance.MoveAgentToNextState();
     }

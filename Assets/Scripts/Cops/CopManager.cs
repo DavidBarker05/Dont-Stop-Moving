@@ -8,6 +8,8 @@ public class CopManager : MonoBehaviour
     /// </summary>
     public static CopManager Instance { get; private set; }
 
+    [SerializeField]
+    CarController player;
     [Header("Spawning")]
     [SerializeField]
     CopAgent copPrefab;
@@ -54,7 +56,11 @@ public class CopManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         if (agents.Count > 0) StartCoroutine(DespawnCops(delay: 0f));
-        for (int i = 0; i < Random.Range(minCops, maxCops); i++) agents.Add(Instantiate(copPrefab));
+        for (int i = 0; i < Random.Range(minCops, maxCops); i++)
+        {
+            agents.Add(Instantiate(copPrefab));
+            agents[i].Player = player;
+        }
         attackingAgent = agents[Random.Range(0, agents.Count)];
         StartCoroutine(ChangeAgentState(delay: engageDelay, offset: Vector3.zero, newCopState: CopAgent.CopState.Engaging)); // Do an actual delay and offset at some point
         StartCoroutine(DespawnCops(delay: despawnDelay));
