@@ -50,7 +50,11 @@ public class CopAgent : MonoBehaviour
             if (_state != value)
             {
                 _state = value;
-                if (value == CopState.Attacking) target = Player.transform.position + Player.Velocity * predictionTime;
+                if (value == CopState.Attacking)
+                {
+                    target = Player.transform.position + Player.Velocity * predictionTime;
+                    canSlowPlayer = true;
+                }
             }
         }
     }
@@ -63,8 +67,9 @@ public class CopAgent : MonoBehaviour
     public CarController Player { get; set; }
 
     Vector3 target;
-
     NavMeshAgent agent;
+    bool canSlowPlayer;
+    bool failedChangeAfterAttack;
 
     void Awake()
     {
@@ -82,6 +87,21 @@ public class CopAgent : MonoBehaviour
         }
         if (CurrentCopState != CopState.Attacking) target = Player.transform.position + Offset;
         if (agent.destination != target) agent.SetDestination(target);
-        if (CurrentCopState != CopState.Driving && Vector3.Distance(transform.position, target) <= completionDistance && CopManager.Instance.CanAgentMoveToNextState) CopManager.Instance.MoveAgentToNextState(caller: this);
+        if (CurrentCopState != CopState.Driving && CopManager.Instance.CanAgentMoveToNextState)
+        {
+            if (Vector3.Distance(transform.position, target) <= completionDistance || failedChangeAfterAttack) CopManager.Instance.MoveAgentToNextState(caller: this);
+            if (failedChangeAfterAttack) failedChangeAfterAttack = false;
+        }
+    }
+
+    // TODO: Make sure collider is trigger
+    void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player")) return; // TODO: Make sure player has player tag
+        if (!canSlowPlayer) return;
+        canSlowPlayer = false; // Only slow the player once
+        // TODO: Actually slow down the player
+        if (CurrentCopState == CopState.Attacking && CopManager.Instance.CanAgentMoveToNextState) CopManager.Instance.MoveAgentToNextState(caller: this);
+        else if (!CopManager.Instance.CanAgentMoveToNextState) failedChangeAfterAttack = true;
     }
 }
