@@ -82,20 +82,20 @@ public class CopManager : MonoBehaviour
     /// </summary>
     public void MoveAgentToNextState()
     {
-        float delay = attackingAgent.CurrentCopState {
+        float delay = attackingAgent.CurrentCopState switch {
             CopAgent.CopState.Engaging => prepareDelay,
             CopAgent.CopState.Attacking => disengageDelay,
             CopAgent.CopState.Disengaging => engageDelay,
             _ => 0f // No delay for attacking, also fallback value (fallback should in theory never happen)
         };
-        Vector3 offset = attackingAgent.CurrentCopState {
+        Vector3 offset = attackingAgent.CurrentCopState switch {
             CopAgent.CopState.Engaging => Vector3.zero, // Do an actual offset at some point
             CopAgent.CopState.Preparing => Vector3.zero, // Do an actual offset at some point
             CopAgent.CopState.Attacking => Vector3.zero, // Do an actual offset at some point
             CopAgent.CopState.Disengaging => Vector3.zero, // Do an actual offset at some point
             _ => Vector3.zero // Fallback value, should in theory never be needed
         };
-        CopAgent.CopState newCopState = attackingAgent.CurrentCopState {
+        CopAgent.CopState newCopState = attackingAgent.CurrentCopState switch {
             CopAgent.CopState.Engaging => CopAgent.CopState.Preparing,
             CopAgent.CopState.Preparing => CopAgent.CopState.Attacking,
             CopAgent.CopState.Attacking => CopAgent.CopState.Disengaging
