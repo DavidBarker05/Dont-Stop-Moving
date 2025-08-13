@@ -82,6 +82,6 @@ public class CopAgent : MonoBehaviour
         }
         if (CurrentCopState != CopState.Attacking) target = Player.transform.position + Offset;
         if (agent.destination != target) agent.SetDestination(target);
-        if (CurrentCopState != CopState.Driving && Vector3.Distance(transform.position, target) <= completionDistance) CopManager.Instance.MoveAgentToNextState();
+        if (CurrentCopState != CopState.Driving && Vector3.Distance(transform.position, target) <= completionDistance && CopManager.Instance.CanAgentMoveToNextState) CopManager.Instance.MoveAgentToNextState(caller: this);
     }
 }

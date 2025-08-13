@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+using SCG = System.Collections.Generic;
+
 public class CopManager : MonoBehaviour
 {
     /// <summary>
@@ -29,18 +31,21 @@ public class CopManager : MonoBehaviour
     [Min(0)]
     float despawnDelay;
     [SerializeField]
-    [Tooltip("How long until the current attacking car begins to engage the player (drive forward towards the player to attack)")]
+    [Tooltip("How long the currently attacking car stays at its driving position")]
     [Min(0)]
-    float engageDelay;
+    float driveHoldTime;
     [SerializeField]
-    [Tooltip("How long the current attacking car prepares before attacking the player")]
+    [Tooltip("How long the currently attacking car stays at its preparing position")]
     [Min(0)]
-    float prepareDelay;
-    [Tooltip("How long until the current attacking car starts disengaging from the player (drive away from the player after attacking)")]
+    float prepareHoldTime;
+    [SerializeField]
+    [Tooltip("How long the currently attacking car stays at its attacking position")]
     [Min(0)]
-    float disengageDelay;
+    float attackHoldTime;
 
-    System.Collections.Generic.List<CopAgent> agents = new System.Collections.Generic.List<CopAgent>();
+    public bool CanAgentMoveToNextState { get; private set; }
+
+    SCG::List<CopAgent> agents = new SCG::List<CopAgent>();
 
     CopAgent attackingAgent;
 
@@ -48,6 +53,7 @@ public class CopManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
         else Instance = this;
+        CanAgentMoveToNextState = true;
     }
 
     void Start() => StartCoroutine(SpawnCops(delay: spawnDelay));
@@ -61,8 +67,7 @@ public class CopManager : MonoBehaviour
             agents.Add(Instantiate(copPrefab));
             agents[i].Player = player;
         }
-        attackingAgent = agents[Random.Range(0, agents.Count)];
-        StartCoroutine(ChangeAgentState(delay: engageDelay, offset: Vector3.zero, newCopState: CopAgent.CopState.Engaging)); // Do an actual delay and offset at some point
+        ChangeAttackingAgent();
         StartCoroutine(DespawnCops(delay: despawnDelay));
     }
 
@@ -75,45 +80,66 @@ public class CopManager : MonoBehaviour
         SpawnCops(delay: spawnDelay);
     }
 
-    IEnumerator ChangeAgentState(float delay, Vector3 offset, CopAgent.CopState newCopState)
+    IEnumerator ChangeAgentState(float holdTime, Vector3 newOffset, CopAgent.CopState newCopState)
     {
-        yield return new WaitForSeconds(delay);
+        CanAgentMoveToNextState = false;
+        yield return new WaitForSeconds(holdTime);
+        CanAgentMoveToNextState = true;
         if (agents.Count <= 0 || attackingAgent == null) yield break;
-        attackingAgent.Offset = offset;
+        attackingAgent.Offset = newOffset;
         attackingAgent.CurrentCopState = newCopState;
+        if (newCopState == CopAgent.CopState.Driving) ChangeAttackingAgent();
+    }
+
+    void ChangeAttackingAgent()
+    {
+        if (agents.Count <= 0) return;
+        attackingAgent = agents[Random.Range(0, agents.Count)];
+        MoveAgentToNextState(caller: this);
     }
 
     /// <summary>
     /// Change the current state of the attacking agent to the next state in the state machine
     /// </summary>
-    public void MoveAgentToNextState()
+    /// <param name="caller">The class calling this method</param>
+    public void MoveAgentToNextState(Object caller)
     {
-        float delay = attackingAgent.CurrentCopState switch {
-            CopAgent.CopState.Engaging => prepareDelay,
-            CopAgent.CopState.Attacking => disengageDelay,
-            CopAgent.CopState.Disengaging => engageDelay,
-            _ => 0f // No delay for attacking, also fallback value (fallback should in theory never happen)
+        if (caller == null || attackingAgent == null) return; // Don't do any logic if there is no caller or attacking agent
+        if (attackingAgent.CurrentCopState == CopAgent.CopState.Driving && caller != this) return; // Only allow the manager to change a driving agent
+        if (!CanAgentMoveToNextState) return;
+        // we start off driving
+        // we get selected
+        // we engage
+        // we make to destination
+        // we hold on prepare
+        // we attack
+        // we hold on attack
+        // we disengage
+        // loop
+        float holdTime = attackingAgent.CurrentCopState switch {
+            CopAgent.CopState.Driving => driveHoldTime,
+            CopAgent.CopState.Engaging => 0f, // Instantly switch from engaging to preparing
+            CopAgent.CopState.Preparing => prepareHoldTime,
+            CopAgent.CopState.Attacking => attackHoldTime,
+            CopAgent.CopState.Disengaging => 0f, // Instantly switch from disengaging to driving
+            _ => 0f, // Fallback value, should in theory never be needed
         };
-        Vector3 offset = attackingAgent.CurrentCopState switch {
-            CopAgent.CopState.Engaging => Vector3.zero, // Do an actual offset at some point
-            CopAgent.CopState.Preparing => Vector3.zero, // Do an actual offset at some point
-            CopAgent.CopState.Attacking => Vector3.zero, // Do an actual offset at some point
-            CopAgent.CopState.Disengaging => Vector3.zero, // Do an actual offset at some point
+        Vector3 newOffset = attackingAgent.CurrentCopState switch {
+            CopAgent.CopState.Driving => Vector3.positiveInfinity,
+            CopAgent.CopState.Engaging => attackingAgent.Offset, // Stay at the same offset for preparing
+            CopAgent.CopState.Preparing => Vector3.zero, // Move to where player is for attacking
+            CopAgent.CopState.Attacking => Vector3.positiveInfinity,
+            CopAgent.CopState.Disengaging => attackingAgent.Offset, // Stay at the same offset for driving
             _ => Vector3.zero // Fallback value, should in theory never be needed
         };
         CopAgent.CopState newCopState = attackingAgent.CurrentCopState switch {
-            CopAgent.CopState.Engaging => CopAgent.CopState.Preparing,
-            CopAgent.CopState.Preparing => CopAgent.CopState.Attacking,
-            CopAgent.CopState.Attacking => CopAgent.CopState.Disengaging,
-            CopAgent.CopState.Disengaging => CopAgent.CopState.Engaging,
+            CopAgent.CopState.Driving => CopAgent.CopState.Engaging, // Switch from driving to engaging
+            CopAgent.CopState.Engaging => CopAgent.CopState.Preparing, // Switch from engaging to preparing
+            CopAgent.CopState.Preparing => CopAgent.CopState.Attacking, // Switch from preparing to attacking
+            CopAgent.CopState.Attacking => CopAgent.CopState.Disengaging, // Switch from attacking to disengaging
+            CopAgent.CopState.Disengaging => CopAgent.CopState.Driving, // Switch from disengaging to driving
             _ => CopAgent.CopState.Driving // Fallback value, should in theory never be needed
         };
-        if (attackingAgent.CurrentCopState == CopAgent.CopState.Disengaging)
-        {
-            attackingAgent.Offset = Vector3.zero; // Do an actual offset at some point
-            attackingAgent.CurrentCopState = CopAgent.CopState.Driving;
-            attackingAgent = agents[Random.Range(0, agents.Count)];
-        }
-        StartCoroutine(ChangeAgentState(delay: delay, offset: offset, newCopState: newCopState));
+        StartCoroutine(ChangeAgentState(holdTime: holdTime, newOffset: newOffset, newCopState: newCopState));
     }
 }
