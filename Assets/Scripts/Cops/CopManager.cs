@@ -98,9 +98,9 @@ public class CopManager : MonoBehaviour
         CopAgent.CopState newCopState = attackingAgent.CurrentCopState switch {
             CopAgent.CopState.Engaging => CopAgent.CopState.Preparing,
             CopAgent.CopState.Preparing => CopAgent.CopState.Attacking,
-            CopAgent.CopState.Attacking => CopAgent.CopState.Disengaging
-            CopAgent.CopState.Disengaging => CopAgent.CopState.Engaging
-            _ => Vector3.Driving // Fallback value, should in theory never be needed
+            CopAgent.CopState.Attacking => CopAgent.CopState.Disengaging,
+            CopAgent.CopState.Disengaging => CopAgent.CopState.Engaging,
+            _ => CopAgent.CopState.Driving // Fallback value, should in theory never be needed
         };
         if (attackingAgent.CurrentCopState == CopAgent.CopState.Disengaging)
         {
