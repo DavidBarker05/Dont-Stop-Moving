@@ -14,4 +14,10 @@ public class ButtonControls : MonoBehaviour
     {
         Application.Quit();
     }
+
+    //back to main menu
+    public void MainMenu() 
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
