@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -43,21 +44,22 @@ public class CarController : MonoBehaviour
             }
             else if (moveInput < 0)
             {
-                if (rb.velocity.magnitude > 0.5f && Vector3.Dot(rb.velocity, transform.forward) > 0)
-                
-                    rb.AddForce(-rb.velocity.normalized * brakingForce * Time.fixedDeltaTime);
+                if (rb.linearVelocity.magnitude > 0.5f && Vector3.Dot(rb.linearVelocity, transform.forward) > 0)
+                {
+                    rb.AddForce(-rb.linearVelocity.normalized * brakingForce * Time.fixedDeltaTime);
                 }
                 else
                 {
                     rb.AddForce(transform.forward * moveInput * acceleration * Time.fixedDeltaTime);
                 }
             }
- 
-            if (rb.velocity.magnitude > maxSpeed)
+
+            if (rb.linearVelocity.magnitude > maxSpeed)
             {
-                rb.velocity = rb.velocity.normalized * maxSpeed;
+                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
             }
         }
+        
 
         void HandleSteering()
         {
@@ -67,7 +69,7 @@ public class CarController : MonoBehaviour
 
         void UpdateSpeedometer()
         {
-            float speed = rb.velocity.magnitude * 3.6f;
+            float speed = rb.linearVelocity.magnitude * 3.6f;
             if (speedText != null)
                 speedText.text = Mathf.RoundToInt(speed) + " km/h";
 
@@ -79,3 +81,4 @@ public class CarController : MonoBehaviour
             }
         }
     }
+}
