@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 4552325201985176436}
   - component: {fileID: 7835173204106123362}
   - component: {fileID: 6229374053738847740}
+  - component: {fileID: 1868141893883599105}
   m_Layer: 0
   m_Name: Road
   m_TagString: Untagged
@@ -374,7 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SerializedVersion: 0
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_CollectObjects: 0
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
@@ -389,10 +390,35 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.4333333
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: ecb6493a85df6234080fd8e3525a809d, type: 2}
   m_BuildHeightMesh: 0
+--- !u!114 &1868141893883599105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8116997015420581057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 1
+  m_AgentTypeID: -1372625422
+  m_StartPoint: {x: 9, y: 0, z: 0}
+  m_EndPoint: {x: 14, y: 0, z: 0}
+  m_StartTransform: {fileID: 0}
+  m_EndTransform: {fileID: 0}
+  m_Activated: 1
+  m_Width: 4.59
+  m_CostModifier: 1
+  m_IsOverridingCost: 0
+  m_Bidirectional: 1
+  m_AutoUpdatePosition: 0
+  m_Area: 0
 --- !u!1 &8503542458317883683
 GameObject:
   m_ObjectHideFlags: 0
