@@ -5,14 +5,13 @@ public class Pickups : MonoBehaviour
     public PickUpType pickUpType; // Type of the pickup
     [SerializeField] CarController playerMovement; // Reference to the PlayerMovement script
 
-    public int speedboost = 5; // Speed boost amount
-    [SerializeField] int increaseSpeed = 10; // Speed to increase when collected
+    [SerializeField] float extraNitrousTime = 2f;
     [SerializeField] int increaseTimeorb = 3; // Coal to increase when collected
 
     public enum PickUpType
     {
 
-        Speed,
+        Nitrous,
         TimeOrb,
     }
 
@@ -33,9 +32,9 @@ public class Pickups : MonoBehaviour
             {
                 switch (pickUpType)
                 {
-                    case PickUpType.Speed:
+                    case PickUpType.Nitrous:
                         // Add speed to the player
-                        playerMovement.AddSpeed(increaseSpeed, speedboost); // Call the AddSpeed method in the PlayerMovement script
+                        playerMovement.AddNitrousTime(extraNitrousTime);
                         break;
                     case PickUpType.TimeOrb:
                         // Add time to the player

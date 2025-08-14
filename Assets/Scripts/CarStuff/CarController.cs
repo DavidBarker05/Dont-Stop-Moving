@@ -6,13 +6,16 @@ using TMPro;
 public class CarController : MonoBehaviour
 {
     [Header("Car Settings")]
-    public float acceleration = 800f;
+    public float baseAcceleration = 800f;
     public float brakingForce = 1000f;
     public float steeringSpeed = 80f;
-    public float maxSpeed = 50f;
+    public float baseMaxSpeed = 50f;
     [SerializeField] float bombSpeed = 25f;
     [SerializeField] float maxBombTime = 30f;
     [SerializeField] [Range(0f, 1f)] float slowTimeScale = 0.5f;
+    [SerializeField] float maxNitrousDuration = 10f;
+    [SerializeField] float nitrousAccelerationBoost = 2f;
+    [SerializeField] float nitrousMaxSpeed = 100f;
 
     [Header("UI - Analog Needle")]
     public RectTransform needleTransform; 
@@ -35,12 +38,19 @@ public class CarController : MonoBehaviour
     public Vector3 Velocity => rb.linearVelocity;
 
     float bombTimer;
+    float currentAcceleration;
+    float currentMaxSpeed;
+    float nitrousTime;
+    bool pressingBoost;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = new Vector3(0, -0.5f, 0);
         bombTimer = maxBombTime;
+        currentAcceleration = baseAcceleration;
+        currentMaxSpeed = baseMaxSpeed;
+        nitrousTime = maxNitrousDuration;
     }
 
     void FixedUpdate()
@@ -58,7 +68,7 @@ public class CarController : MonoBehaviour
 
         if (moveInput > 0)
         {
-            rb.AddForce(transform.forward * moveInput * acceleration * Time.fixedDeltaTime);
+            rb.AddForce(transform.forward * moveInput * currentAcceleration * Time.fixedDeltaTime);
         }
         else if (moveInput < 0)
         {
@@ -68,13 +78,26 @@ public class CarController : MonoBehaviour
             }
             else
             {
-                rb.AddForce(transform.forward * moveInput * acceleration * Time.fixedDeltaTime);
+                rb.AddForce(transform.forward * moveInput * currentAcceleration * Time.fixedDeltaTime);
             }
         }
 
-        if (rb.linearVelocity.magnitude > maxSpeed)
+        pressingBoost = Input.GetKey(KeyCode.Space);
+        if (pressingBoost && nitrousTime > 0f)
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+            nitrousTime -= Time.fixedDeltaTime;
+            if (currentAcceleration != baseAcceleration * nitrousAccelerationBoost) currentAcceleration = baseAcceleration * nitrousAccelerationBoost;
+            if (currentMaxSpeed != nitrousMaxSpeed) currentMaxSpeed = nitrousMaxSpeed;
+        }
+        else
+        {
+            if (currentAcceleration != baseAcceleration) currentAcceleration = baseAcceleration;
+            if (currentMaxSpeed != baseMaxSpeed) currentMaxSpeed = baseMaxSpeed;
+        }
+
+        if (rb.linearVelocity.magnitude > currentMaxSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * currentMaxSpeed;
         }
     }
         
@@ -93,39 +116,17 @@ public class CarController : MonoBehaviour
 
         if (needleTransform != null)
         {
-            float speedPercent = Mathf.Clamp01(speed / maxSpeed);
+            float speedPercent = Mathf.Clamp01(speed / nitrousMaxSpeed);
             float needleAngle = Mathf.Lerp(minNeedleAngle, maxNeedleAngle, speedPercent);
             needleTransform.localEulerAngles = new Vector3(0, 0, needleAngle);
         }
     }
 
-    public void AddSpeed(int speedToAdd, int durations)
+    public void AddNitrousTime(float nitrousTime)
     {
-        float originalSpeeds = acceleration;// Store the original speed
-        Debug.Log("Speed called: " + acceleration);
-
-        // Stop any existing slowdown to avoid stacking
-        if (speedUpCoroutine != null)
-        {
-            StopCoroutine(speedUpCoroutine);
-
-        }
-        //speedText.text = "Speed Boost Activated!"; // Update the speed text
-        speedUpCoroutine = StartCoroutine(SpeedUpPlayer(speedToAdd, durations)); // Trigger the slowdown effect
-        originalSpeeds = 0;
+        this.nitrousTime = Mathf.Clamp(this.nitrousTime + nitrousTime, 0f, maxNitrousDuration);
     }
 
-    public IEnumerator SpeedUpPlayer(int speedDuration, int duration)
-    {
-        float playerOriginalGspeed = acceleration; // Store the original speed
-        acceleration = 20f; // Increase the player's speed
-        acceleration += speedDuration;               // apply boost
-        yield return new WaitForSeconds(duration); // Wait for the specified duration
-        acceleration = playerOriginalGspeed; // Revert to the original speed
-        Debug.Log("Speed Boost Deactivated! Current Speed: " + acceleration); // Log the speed deactivation  
-                                                                              // speedText.text = "Speed Boost Deactivated!"; // Update the speed text
-        speedUpCoroutine = null;
-    }
     public void AddTimeOrb(int timeOrbToAdd)
     {
         timeOrb = timeOrbToAdd; // Add time orb to the player's time orb
