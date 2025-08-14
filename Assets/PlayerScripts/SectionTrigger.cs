@@ -1,14 +1,37 @@
-using Unity.Mathematics;
 using UnityEngine;
 
 public class SectionTrigger : MonoBehaviour
 {
-    public GameObject roadSection;
+    public GameObject roadSection; // Prefab reference
+    private GameObject oldRoad;    // Last spawned section
+    private GameObject newRoad;    // Current spawned section
+    public Transform spawnPoint;
+    private bool Spawn = true;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Trigger"))
         {
-            Instantiate(roadSection, new Vector3(0,0,21), Quaternion.identity);
+            if (Spawn)
+            {
+                newRoad = Instantiate(roadSection, spawnPoint.position, spawnPoint.rotation);
+                Spawn = false;
+            }
         }
+        // Only set oldRoad if it's null and newRoad exists
+        if (oldRoad == null && newRoad != null)
+        {
+            oldRoad = newRoad;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (oldRoad != null && oldRoad != newRoad)
+        {
+            Destroy(oldRoad);
+        }
+        oldRoad = newRoad;
+        Spawn = true;
     }
 }

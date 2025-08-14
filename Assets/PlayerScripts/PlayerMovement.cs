@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        direction.z = forwardSpeed;
+        direction.x = forwardSpeed;
     }
     private void FixedUpdate()
     {
