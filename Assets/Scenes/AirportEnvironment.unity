@@ -4332,6 +4332,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7218869087411042102, guid: 425d51ff042d406498d2995abf9767b2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5853468186884617803}
+    - targetCorrespondingSourceObject: {fileID: 7218869087411042102, guid: 425d51ff042d406498d2995abf9767b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5853468186884617804}
   m_SourcePrefab: {fileID: 100100000, guid: 425d51ff042d406498d2995abf9767b2, type: 3}
 --- !u!1 &5853468186884617802 stripped
 GameObject:
@@ -4370,6 +4373,31 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 005d564fea8d53749af6cf66331838d3, type: 2}
   m_BuildHeightMesh: 0
+--- !u!114 &5853468186884617804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5853468186884617802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 1
+  m_AgentTypeID: -1372625422
+  m_StartPoint: {x: 17.4, y: 0, z: 2.32}
+  m_EndPoint: {x: 34.2, y: 0, z: 2.32}
+  m_StartTransform: {fileID: 0}
+  m_EndTransform: {fileID: 0}
+  m_Activated: 1
+  m_Width: 0
+  m_CostModifier: 1
+  m_IsOverridingCost: 0
+  m_Bidirectional: 1
+  m_AutoUpdatePosition: 0
+  m_Area: 0
 --- !u!114 &5875152052720108941
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2094,6 +2094,7 @@ GameObject:
   m_Component:
   - component: {fileID: 584706798}
   - component: {fileID: 584706799}
+  - component: {fileID: 584706800}
   m_Layer: 0
   m_Name: Road&RaisedLevel - City
   m_TagString: Untagged
@@ -2163,6 +2164,31 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 97622de5e105b1a4587a891412c43d88, type: 2}
   m_BuildHeightMesh: 0
+--- !u!114 &584706800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584706797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 1
+  m_AgentTypeID: 0
+  m_StartPoint: {x: 13.3, y: 5.6, z: 17.2}
+  m_EndPoint: {x: 35.4, y: 5.6, z: 17.2}
+  m_StartTransform: {fileID: 0}
+  m_EndTransform: {fileID: 0}
+  m_Activated: 1
+  m_Width: 6.6
+  m_CostModifier: 1
+  m_IsOverridingCost: 0
+  m_Bidirectional: 1
+  m_AutoUpdatePosition: 0
+  m_Area: 0
 --- !u!1001 &597124854
 PrefabInstance:
   m_ObjectHideFlags: 0
