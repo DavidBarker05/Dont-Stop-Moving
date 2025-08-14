@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class SectionTrigger : MonoBehaviour
@@ -7,7 +8,7 @@ public class SectionTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Trigger"))
         {
-            Instantiate(roadSection);
+            Instantiate(roadSection, new Vector3(0,0,21), Quaternion.identity);
         }
     }
 }
