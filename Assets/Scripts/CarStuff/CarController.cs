@@ -10,6 +10,8 @@ public class CarController : MonoBehaviour
     public float brakingForce = 1000f;
     public float steeringSpeed = 80f;
     public float maxSpeed = 50f;
+    [SerializeField] float bombSpeed = 25f;
+    [SerializeField] float maxBombTime = 30f;
 
     [Header("UI - Analog Needle")]
     public RectTransform needleTransform; 
@@ -31,10 +33,13 @@ public class CarController : MonoBehaviour
 
     public Vector3 Velocity => rb.linearVelocity;
 
+    float bombTimer;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass = new Vector3(0, -0.5f, 0); 
+        rb.centerOfMass = new Vector3(0, -0.5f, 0);
+        bombTimer = maxBombTime;
     }
 
     void FixedUpdate()
@@ -42,6 +47,8 @@ public class CarController : MonoBehaviour
         HandleMovement();
         HandleSteering();
         UpdateSpeedometer();
+        if (Velocity.magnitude < bombSpeed) bombTimer -= Time.fixedDeltaTime;
+        if (bombTimer <= 0f) Explode();
     }
 
     void HandleMovement()
@@ -67,23 +74,6 @@ public class CarController : MonoBehaviour
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-        }
-        //Logic for the bomb which is triggered by random selection of a value between 2 and 10
-        if (Input.GetKey(KeyCode.Space))
-        {
-            float randomSpeedValue = Random.Range(2, 11); // random float between 0 and 10
-            Debug.Log("Bomb trigger! Random value: " + randomSpeedValue);
-
-            if (acceleration == randomSpeedValue)
-            {
-                Debug.Log("Bomb happens: " + acceleration);
-                // Reset position to starting point
-                transform.position = Vector3.zero; // or your custom spawn position
-            }
-            else
-            {
-                Debug.Log("Player survived!");
-            }
         }
     }
         
@@ -157,5 +147,10 @@ public class CarController : MonoBehaviour
         Debug.Log("Time Orb Deactivated! Current Speed: " + acceleration); // Log the speed deactivation
         //timeOrbText.text = "Time Orb Deactivated!"; // Update the time orb text
         slowDownCoroutine = null; // Reset the coroutine reference
+    }
+
+    void Explode()
+    {
+        SceneManager.LoadScene("GamePlay");
     }
 }
