@@ -213,4 +213,10 @@ public class CarController : MonoBehaviour
     {
 
     }
+
+    public void LoseSpeed(float lossAmount)
+    {
+        Vector3 lossV = Velocity.normalized * lossAmount;
+        rb.linearVelocity -= lossV;
+    }
 }

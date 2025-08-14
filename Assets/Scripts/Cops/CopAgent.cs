@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(NavMeshAgent), typeof(Rigidbody))]
 public class CopAgent : MonoBehaviour
 {
     /// <summary>
@@ -37,6 +37,16 @@ public class CopAgent : MonoBehaviour
     [SerializeField]
     [Tooltip("How far the cop car must be to be considered at its target destination")]
     float completionDistance;
+    [SerializeField]
+    [Min(0f)]
+    float maxSpeed;
+    [SerializeField]
+    [Min(0f)]
+    float acceleration;
+    [SerializeField]
+    [Min(0f)]
+    [Tooltip("The amount of speed the player loses when they impact a cop.")]
+    float impactSpeedLoss;
 
     CopState _state;
     /// <summary>
@@ -75,6 +85,11 @@ public class CopAgent : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
+        agent.speed = maxSpeed;
+        agent.acceleration = acceleration;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Rigidbody>().freezeRotation = true;
+        GetComponent<Rigidbody>().useGravity = false;
     }
 
     void Update()
@@ -94,13 +109,12 @@ public class CopAgent : MonoBehaviour
         }
     }
 
-    // TODO: Make sure collider is trigger
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision collision)
     {
-        if (!other.CompareTag("Player")) return; // TODO: Make sure player has player tag
+        if (!collision.collider.CompareTag("Player")) return; // TODO: Make sure player has player tag
         if (!canSlowPlayer) return;
         canSlowPlayer = false; // Only slow the player once
-        // TODO: Actually slow down the player
+        Player.LoseSpeed(impactSpeedLoss);
         if (CurrentCopState == CopState.Attacking && CopManager.Instance.CanAgentMoveToNextState) CopManager.Instance.MoveAgentToNextState(caller: this);
         else if (!CopManager.Instance.CanAgentMoveToNextState) failedChangeAfterAttack = true;
     }
