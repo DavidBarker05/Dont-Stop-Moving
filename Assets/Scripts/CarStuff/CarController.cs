@@ -12,6 +12,7 @@ public class CarController : MonoBehaviour
     public float maxSpeed = 50f;
     [SerializeField] float bombSpeed = 25f;
     [SerializeField] float maxBombTime = 30f;
+    [SerializeField] [Range(0f, 1f)] float slowTimeScale = 0.5f;
 
     [Header("UI - Analog Needle")]
     public RectTransform needleTransform; 
@@ -140,17 +141,16 @@ public class CarController : MonoBehaviour
     }
     public IEnumerator SlowDownPlayer(int duration)
     {
-        float playerOGspeed = acceleration; // Store the original speed
-        acceleration = 1f; // Reduce the player's speed
+        Time.timeScale = slowTimeScale;
         yield return new WaitForSeconds(duration); // Wait for the specified duration
-        acceleration = playerOGspeed;
-        Debug.Log("Time Orb Deactivated! Current Speed: " + acceleration); // Log the speed deactivation
+        Time.timeScale = 1f;
+        //Debug.Log("Time Orb Deactivated! Current Speed: " + acceleration); // Log the speed deactivation
         //timeOrbText.text = "Time Orb Deactivated!"; // Update the time orb text
         slowDownCoroutine = null; // Reset the coroutine reference
     }
 
     void Explode()
     {
-        SceneManager.LoadScene("GamePlay");
+
     }
 }
