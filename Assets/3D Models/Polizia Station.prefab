@@ -10,31 +10,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.64
+      value: 0.4318272
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.269892
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.45
+      value: 0.3036285
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 17.1
+      value: 16.385
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.6811957
+      value: -6.37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.44169
+      value: -4.8686
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 0.7073536
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalRotation.x
@@ -42,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0.7068599
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalRotation.z
@@ -54,16 +54,40 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 89.96
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3477821731311062464, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 706889e5b7551464cb9bfd1b6c872570, type: 2}
+    - target: {fileID: -798894052252839312, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 287ca340eb878244fb0d77e8df5cf4d5, type: 2}
     - target: {fileID: 919132149155446097, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
       propertyPath: m_Name
       value: Polizia Station
       objectReference: {fileID: 0}
+    - target: {fileID: 1603246306389932429, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 15b899bfffa3b8f4e87f72598421a557, type: 2}
+    - target: {fileID: 4407187375235809858, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 706889e5b7551464cb9bfd1b6c872570, type: 2}
+    - target: {fileID: 5694059874591286030, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 287ca340eb878244fb0d77e8df5cf4d5, type: 2}
+    - target: {fileID: 8424073627695423409, guid: 716707c56791e9b46b0f317f9fd82bad, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 706889e5b7551464cb9bfd1b6c872570, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

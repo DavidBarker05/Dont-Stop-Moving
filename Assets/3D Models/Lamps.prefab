@@ -72,6 +72,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lamps
       objectReference: {fileID: 0}
+    - target: {fileID: 4431670454091400558, guid: fecfc67ec0400f1488bcfa7caf4142a3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 706889e5b7551464cb9bfd1b6c872570, type: 2}
+    - target: {fileID: 8835409689826365435, guid: fecfc67ec0400f1488bcfa7caf4142a3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1badd2bfd593f6042b2d3d8dff8ffef3, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

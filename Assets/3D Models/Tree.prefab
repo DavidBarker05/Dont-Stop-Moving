@@ -64,6 +64,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree
       objectReference: {fileID: 0}
+    - target: {fileID: 4431670454091400558, guid: 91071e650aa8b96439324522ea25f878, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3dab8165df1c46047a71ce84b18dc340, type: 2}
+    - target: {fileID: 8424073627695423409, guid: 91071e650aa8b96439324522ea25f878, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b55dd8cf7fa3b5c459aba38df8029aaa, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
