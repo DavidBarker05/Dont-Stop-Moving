@@ -20,4 +20,14 @@ public class ButtonControls : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void PuaseGame()
+    {
+        Time.timeScale = 0f;
+    }    
+
+    public void unPauseGame()
+    {
+        Time.timeScale = 1.0f;
+    }
 }
