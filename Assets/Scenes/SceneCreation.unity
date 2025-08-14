@@ -297,8 +297,8 @@ GameObject:
   - component: {fileID: 1254164173}
   - component: {fileID: 1254164172}
   - component: {fileID: 1254164177}
-  - component: {fileID: 1254164178}
   - component: {fileID: 1254164179}
+  - component: {fileID: 1254164180}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -450,19 +450,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1254164178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1254164171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8989dad36f87dd4090435ce21491bcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forwardSpeed: 2.85
 --- !u!114 &1254164179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +463,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roadSection: {fileID: 5520607348845372815, guid: 178bc5718bd2d744e96179f4888f385d, type: 3}
+--- !u!114 &1254164180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254164171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17dff208a8873514f9d5a33545830773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 10
+  brakingForce: 20
+  steeringSpeed: 80
+  maxSpeed: 30
+  bombSpeed: 25
+  maxBombTime: 30
+  needleTransform: {fileID: 0}
+  minNeedleAngle: 225
+  maxNeedleAngle: -45
+  maxTimeOrb: 2
+  playerSlowSpeed: 1
+  horizontalSlowSpeed: 1.5
+  speedText: {fileID: 0}
 --- !u!1 &1513661374
 GameObject:
   m_ObjectHideFlags: 0
