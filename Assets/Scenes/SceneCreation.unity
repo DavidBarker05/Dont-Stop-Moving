@@ -382,6 +382,8 @@ MonoBehaviour:
   maxTimeOrb: 2
   playerSlowSpeed: 1
   horizontalSlowSpeed: 1.5
+  runTime: 0
+  bestTime: 0
   speedText: {fileID: 0}
 --- !u!114 &1254164181
 MonoBehaviour:

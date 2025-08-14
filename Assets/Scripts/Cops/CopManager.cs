@@ -16,10 +16,10 @@ public class CopManager : MonoBehaviour
     [SerializeField]
     CopAgent copPrefab;
     [SerializeField]
-    [Range(1, 3)]
+    [Range(1, 2)]
     int minCops;
     [SerializeField]
-    [Range(3, 5)]
+    [Range(2, 3)]
     int maxCops;
     [Header("Timing")]
     [SerializeField]
