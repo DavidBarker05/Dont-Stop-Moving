@@ -240,6 +240,68 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &1862676381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1862676383}
+  - component: {fileID: 1862676382}
+  m_Layer: 0
+  m_Name: CopManger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1862676382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862676381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c319ebb8251535748a1926329bfe7a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  copPrefab: {fileID: 1035295447329287055, guid: 0ec9a82c9e7adf544a157e5efaa838b9, type: 3}
+  minCops: 1
+  maxCops: 2
+  spawnDelay: 30
+  despawnDelay: 30
+  driveHoldTime: 2
+  prepareHoldTime: 5
+  attackHoldTime: 3
+  drivingOffsets:
+  - {x: 17.9, y: 0, z: 25.62}
+  - {x: -17.9, y: 0, z: -25.62}
+  - {x: 12.8, y: 0, z: -14.8}
+  - {x: 14.5, y: 0, z: 4.58}
+  preparingOffsets:
+  - {x: 8.08, y: 0, z: 5.92}
+  - {x: -8.03, y: 0, z: -7.98}
+  - {x: -3.1, y: 0, z: -9.95}
+--- !u!4 &1862676383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862676381}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5912212293014408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6867,3 +6929,4 @@ SceneRoots:
   - {fileID: 3161318749217137587}
   - {fileID: 7542748198362795006}
   - {fileID: 1737900890285364313}
+  - {fileID: 1862676383}
