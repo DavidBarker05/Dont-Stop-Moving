@@ -27,7 +27,11 @@ public class CarController : MonoBehaviour
     private Coroutine speedUpCoroutine;
     public float playerSlowSpeed = 1f; // Reduced speed of the player movement
     public float horizontalSlowSpeed = 1.5f;
-
+   // public UnityEngine.UI.Text runTimer; // Reference to the UI Text component to display the run timer
+    //public UnityEngine.UI.Text bestTimer; // Reference to the UI Text component to display the best timer
+    public float runTime = 0; // Time for the run
+    public float bestTime = 0;// Best time for the player - record time in the sense
+    private bool isTimerRunning = false; // Flag to check if the timer is running
     //[SerializeField] TMP_Text timeOrbText;
     //[SerializeField] TMP_Text speedText;
     private int timeOrb = 0; // This is the time orb of the player
@@ -69,6 +73,19 @@ public class CarController : MonoBehaviour
         if (moveInput > 0)
         {
             rb.AddForce(transform.forward * moveInput * currentAcceleration * Time.fixedDeltaTime);
+            //Timer that counts the run time and best time
+            if (isTimerRunning == true)
+            {
+                runTime += Time.deltaTime; // Increment the run time by the time since the last frame
+                //runTimer.text = "Run Time: " + runTime.ToString("F2") + " seconds"; // Update the UI text with the current run time
+                Debug.Log("Run Time: " + runTime.ToString("F2") + " seconds"); // Log the run time to the console
+                if (bestTime == 0 || runTime < bestTime)
+                {
+                    bestTime = runTime; // Update the best time if it's the first run or if the current run is better
+                }
+                //bestTimer.text = "Best Time: " + bestTime.ToString("F2") + " seconds"; // Update the UI text with the best time
+                Debug.Log("Best Time: " + bestTime.ToString("F2") + " seconds"); // Log the best time to the console
+            }
         }
         else if (moveInput < 0)
         {
@@ -149,7 +166,49 @@ public class CarController : MonoBehaviour
         //timeOrbText.text = "Time Orb Deactivated!"; // Update the time orb text
         slowDownCoroutine = null; // Reset the coroutine reference
     }
+    //Script for timer
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "StartRace")
+        {
+            // Check if the player has entered the trigger area
+            if (isTimerRunning == false)
+            {
+                isTimerRunning = true; // Start the timer
+                runTime = 0f; // Reset the run time
+                StartCoroutine(RunTimer()); // Start the coroutine to update the timer
+            }
 
+
+            // Check if the player has completed the run
+            if (runTime == 0)
+            {
+                bestTime = runTime; // Set the best time to the current run time    
+            }
+
+            if (runTime > bestTime)
+            {
+                bestTime = runTime; // Update the best time if the current run time is better
+            }
+        }
+
+    }
+    private IEnumerator RunTimer()
+    {
+        while (isTimerRunning)
+        {
+            yield return new WaitForSeconds(1f); // Wait for 1 second
+            runTime += 1f; // Increment the run time by 1 second
+            //runTimer.text = "Run Time: " + runTime.ToString("F2") + " seconds"; // Update the UI text with the current run time
+            Debug.Log("Run Time: " + runTime); // Log the current run time
+            if (bestTime == 0 || runTime > bestTime)
+            {
+                bestTime = runTime; // Update the best time if it's the first run or if the current run is better
+            }
+            //bestTimer.text = "Best Time: " + bestTime.ToString("F2") + " seconds"; // Update the UI text with the best time
+            Debug.Log("Best Time: " + bestTime); // Log the best time to the console
+        }
+    }
     void Explode()
     {
 
